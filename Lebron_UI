@@ -55,7 +55,7 @@ if ExistingUI then
         StarterGui:SetCore("SendNotification", {
             Title = "Sxl4n UI";
             Text = "Dupe Detected! Showing existing UI...";
-            Icon = "rbxassetid://18817519330";
+            Icon = "rbxassetid://1483086145";
             Duration = 5;
         })
     end)
@@ -96,10 +96,10 @@ local IMAGE_TRANSPARENCY = 0.7
 local TOGGLE_KEY = Enum.KeyCode.RightControl
 
 local ICONS = {
-    NOTIF_ICON_ID = "rbxassetid://5179290070",
+    NOTIF_ICON_ID = "rbxassetid://11401835376",
     MOBILE_ICON_ID = "rbxassetid://18817519330",
-    ICON_ERROR = "rbxassetid://1222212345",
-    ICON_DEFAULT = "rbxassetid://5179290070"
+    ICON_ERROR = "rbxassetid://11401835376",
+    ICON_DEFAULT = "rbxassetid://11401835376"
 }
 
 
@@ -460,6 +460,7 @@ SourceBox.ClearTextOnFocus = false
 SourceBox.AutomaticSize = Enum.AutomaticSize.XY
 SourceBox.ZIndex = 4
 
+
 local function UpdateLines()
     local text = SourceBox.Text
     local _, count = text:gsub("\n", "\n")
@@ -476,6 +477,7 @@ local function UpdateLines()
 end
 
 SourceBox:GetPropertyChangedSignal("Text"):Connect(UpdateLines)
+
 CodeScroller:GetPropertyChangedSignal("CanvasPosition"):Connect(function()
     -- Move the line numbers up/down opposite to the scroll to simulate scrolling
     LineNums.Position = UDim2.new(0, 0, 0, -CodeScroller.CanvasPosition.Y)
@@ -1359,7 +1361,7 @@ DestroyBtn.MouseButton1Click:Connect(function()
         StarterGui:SetCore("SendNotification", {
             Title = "Sx4ln UI";
             Text = "UI Destroyed Successfully!";
-            Icon = "rbxassetid://10110319532";
+            Icon = "rbxassetid://1483086145";
             Duration = 3;
         })
     end)
