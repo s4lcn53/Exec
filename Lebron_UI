@@ -55,7 +55,7 @@ if ExistingUI then
         StarterGui:SetCore("SendNotification", {
             Title = "Sxl4n UI";
             Text = "Dupe Detected! Showing existing UI...";
-            Icon = "rbxthumb://type=Asset&id=78634733259759&w=420&h=420";
+            Icon = "rbxassetid://18817519330";
             Duration = 5;
         })
     end)
@@ -95,10 +95,13 @@ local EDITOR_IMAGE_ID = "8652665149"
 local IMAGE_TRANSPARENCY = 0.7 
 local TOGGLE_KEY = Enum.KeyCode.RightControl
 
-local NOTIF_ICON_ID = "rbxthumb://type=Asset&id=5179290070&w=420&h=420"
-local MOBILE_ICON_ID = "rbxthumb://type=Asset&id=78634733259759&w=420&h=420"
-local ICON_ERROR = "rbxassetid://12222123"
-local ICON_DEFAULT = "rbxassetid://5179290070"
+local ICONS = {
+    NOTIF_ICON_ID = "rbxassetid://5179290070",
+    MOBILE_ICON_ID = "rbxassetid://18817519330",
+    ICON_ERROR = "rbxassetid://1222212345",
+    ICON_DEFAULT = "rbxassetid://5179290070"
+}
+
 
 -- [FIXED] WORKING SOUND IDS
 local SOUND_OPEN_ID = "rbxassetid://18908859228" 
@@ -191,7 +194,7 @@ local function SendNotification(text, color, customIcon)
     Icon.Position = UDim2.new(0, 10, 0.5, 0)
     Icon.AnchorPoint = Vector2.new(0, 0.5)
     Icon.Size = UDim2.new(0, 0, 0, 0) -- Start Scale 0 for Pop Effect
-    Icon.Image = NOTIF_ICON_ID or ICON_DEFAULT -- Use custom or default
+    Icon.Image = ICONS.NOTIF_ICON_ID -- Use custom or default
     Icon.ImageColor3 = color or Color3.fromRGB(255, 255, 255)
     Icon.ScaleType = Enum.ScaleType.Fit
     
@@ -228,7 +231,7 @@ local function SendNotification(text, color, customIcon)
     end)
 end
 
-SendNotification("Yokai V94 Loaded", Color3.fromRGB(0, 255, 100), ICON_DEFAULT)
+SendNotification("Yokai V94 Loaded", Color3.fromRGB(0, 255, 100), ICONS.ICON_DEFAULT)
 
 if ExistingUI then
     SendNotification("Updated Successfully!", Color3.fromRGB(0, 255, 100))
@@ -253,7 +256,7 @@ ToggleBtn.Size = UDim2.new(0, 70, 0, 70) -- Small Corner Size
 ToggleBtn.Position = UDim2.new(0, 100, 0, 15) -- Top Left (Safe Zone)
 ToggleBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 ToggleBtn.BackgroundTransparency = 0.6
-ToggleBtn.Image = MOBILE_ICON_ID
+ToggleBtn.Image = ICONS.MOBILE_ICON_ID
 ToggleBtn.Visible = true -- Enabled for EVERYONE
 ToggleBtn.Active = true
 ToggleBtn.Draggable = true -- Allows PC users to drag it too
