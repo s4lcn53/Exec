@@ -55,7 +55,7 @@ if ExistingUI then
         StarterGui:SetCore("SendNotification", {
             Title = "Sxl4n UI";
             Text = "Dupe Detected! Showing existing UI...";
-            Icon = "rbxassetid://5179290070";
+            Icon = "rbxthumb://type=Asset&id=78634733259759&w=420&h=420";
             Duration = 5;
         })
     end)
@@ -95,7 +95,10 @@ local EDITOR_IMAGE_ID = "8652665149"
 local IMAGE_TRANSPARENCY = 0.7 
 local TOGGLE_KEY = Enum.KeyCode.RightControl
 
-local NOTIF_ICON_ID = "rbxassetid://5179290070"
+local NOTIF_ICON_ID = "rbxthumb://type=Asset&id=5179290070&w=420&h=420"
+local MOBILE_ICON_ID = "rbxthumb://type=Asset&id=78634733259759&w=420&h=420"
+local ICON_ERROR = "rbxassetid://12222123"
+local ICON_DEFAULT = "rbxassetid://5179290070"
 
 -- [FIXED] WORKING SOUND IDS
 local SOUND_OPEN_ID = "rbxassetid://18908859228" 
@@ -162,78 +165,70 @@ end
 local NotifContainer = Instance.new("Frame", ScreenGui)
 NotifContainer.Name = "NotifContainer"
 NotifContainer.BackgroundTransparency = 1
-NotifContainer.Position = UDim2.new(1, -20, 1, -20) -- Bottom Right Corner
-NotifContainer.AnchorPoint = Vector2.new(1, 1) 
-NotifContainer.Size = UDim2.new(0, 300, 0.8, 0) -- Tall container
-NotifContainer.ZIndex = 2000
+NotifContainer.Position = UDim2.new(1, -20, 1, -20)
+NotifContainer.AnchorPoint = Vector2.new(1, 1)
+NotifContainer.Size = UDim2.new(0, 300, 0.8, 0)
 
 local NotifLayout = Instance.new("UIListLayout", NotifContainer)
 NotifLayout.SortOrder = Enum.SortOrder.LayoutOrder
-NotifLayout.VerticalAlignment = Enum.VerticalAlignment.Bottom -- Stack from bottom up
-NotifLayout.Padding = UDim.new(0, 8) -- Space between notifs
+NotifLayout.VerticalAlignment = Enum.VerticalAlignment.Bottom
+NotifLayout.Padding = UDim.new(0, 8)
 
--- [NEW] ROBUST NOTIFICATION FUNCTION
-local function SendNotification(text, color)
-    -- Create Frame
+local function SendNotification(text, color, customIcon)
     local Notif = Instance.new("Frame")
-    Notif.Name = "Notification"
-    Notif.Parent = NotifContainer -- Parent FIRST before tweening
+    Notif.Parent = NotifContainer
     Notif.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-    Notif.BorderSizePixel = 0
-    Notif.BackgroundTransparency = 1 -- Start invisible
-    Notif.Size = UDim2.new(1, 0, 0, 0) -- Start height 0 (Grow effect)
+    Notif.BackgroundTransparency = 1
+    Notif.Size = UDim2.new(1, 0, 0, 0)
     Notif.ClipsDescendants = true
-    Notif.ZIndex = 2001
 
-    -- Styling
     local Corner = Instance.new("UICorner", Notif); Corner.CornerRadius = UDim.new(0, 8)
     local Stroke = Instance.new("UIStroke", Notif); Stroke.Color = color or Color3.fromRGB(0, 100, 255); Stroke.Thickness = 1.5; Stroke.Transparency = 1
 
-    -- Icon (Larger & Cropped for Anime Decals)
+    -- [NEW] ICON LOGIC
     local Icon = Instance.new("ImageLabel", Notif)
-    Icon.Name = "Icon"
     Icon.BackgroundTransparency = 1
-    Icon.Position = UDim2.new(0, 8, 0.5, 0)
+    Icon.Position = UDim2.new(0, 10, 0.5, 0)
     Icon.AnchorPoint = Vector2.new(0, 0.5)
-    Icon.Size = UDim2.new(0, 35, 0, 35) 
-    Icon.Image = NOTIF_ICON_ID -- Using verified Bell ID
-    Icon.ImageColor3 = color or Color3.fromRGB(0, 100, 255) -- Tinted
+    Icon.Size = UDim2.new(0, 0, 0, 0) -- Start Scale 0 for Pop Effect
+    Icon.Image = NOTIF_ICON_ID or ICON_DEFAULT -- Use custom or default
+    Icon.ImageColor3 = color or Color3.fromRGB(255, 255, 255)
     Icon.ScaleType = Enum.ScaleType.Fit
-    Icon.ImageTransparency = 1 -- Starts hidden, tweens in
-    Icon.ZIndex = 2010 -- Very High ZIndex
-    Icon.ClipsDescendants = true
-    local IconCorner = Instance.new("UICorner", Icon); IconCorner.CornerRadius = UDim.new(0, 6)
+    
     -- Text Label
-
     local Label = Instance.new("TextLabel", Notif)
     Label.BackgroundTransparency = 1
-    Label.Position = UDim2.new(0, 50, 0, 0) 
-    Label.Size = UDim2.new(1, -55, 1, 0)
+    Label.Position = UDim2.new(0, 55, 0, 0) 
+    Label.Size = UDim2.new(1, -60, 1, 0)
     Label.Font = Enum.Font.GothamBold
     Label.Text = text
     Label.TextColor3 = Color3.fromRGB(255, 255, 255)
     Label.TextSize = 14
     Label.TextXAlignment = Enum.TextXAlignment.Left
     Label.TextTransparency = 1
-    Label.TextWrapped = true
-    Label.ZIndex = 2002
-       
-    -- Animation
+
+    -- [NEW] ANIMATION SEQUENCE
+    -- 1. Expand Frame
     TweenService:Create(Notif, TweenInfo.new(0.3), {Size = UDim2.new(1, 0, 0, 60), BackgroundTransparency = 0.1}):Play()
     TweenService:Create(Stroke, TweenInfo.new(0.3), {Transparency = 0.2}):Play()
-    TweenService:Create(Icon, TweenInfo.new(0.3), {ImageTransparency = 0}):Play() -- Reveals Icon
+    
+    -- 2. Pop The Icon (Elastic Out)
+    TweenService:Create(Icon, TweenInfo.new(0.5, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out), {Size = UDim2.new(0, 35, 0, 35)}):Play()
+    
+    -- 3. Fade In Text
     TweenService:Create(Label, TweenInfo.new(0.3), {TextTransparency = 0}):Play()
 
+    -- Cleanup
     task.delay(4, function()
         if Notif and Notif.Parent then
-            local t1 = TweenService:Create(Notif, TweenInfo.new(0.3), {BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 0)})
-            t1:Play(); t1.Completed:Wait()
+            local t = TweenService:Create(Notif, TweenInfo.new(0.3), {BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 0)})
+            t:Play(); t.Completed:Wait()
             if Notif then Notif:Destroy() end
         end
     end)
 end
 
-SendNotification("Lebron James is the Goat", Color3.fromRGB(0, 255, 100))
+SendNotification("Yokai V94 Loaded", Color3.fromRGB(0, 255, 100), ICON_DEFAULT)
 
 if ExistingUI then
     SendNotification("Updated Successfully!", Color3.fromRGB(0, 255, 100))
@@ -251,6 +246,26 @@ MainFrame.Size = UDim2.new(0, 750, 0, 400)
 MainFrame.ClipsDescendants = true 
 MainFrame.ZIndex = 1
 MainFrame.Visible = true
+
+local ToggleBtn = Instance.new("ImageButton", ScreenGui)
+ToggleBtn.Name = "UniversalToggle"
+ToggleBtn.Size = UDim2.new(0, 70, 0, 70) -- Small Corner Size
+ToggleBtn.Position = UDim2.new(0, 100, 0, 15) -- Top Left (Safe Zone)
+ToggleBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+ToggleBtn.BackgroundTransparency = 0.6
+ToggleBtn.Image = MOBILE_ICON_ID
+ToggleBtn.Visible = true -- Enabled for EVERYONE
+ToggleBtn.Active = true
+ToggleBtn.Draggable = true -- Allows PC users to drag it too
+
+local ToggleCorner = Instance.new("UICorner", ToggleBtn); ToggleCorner.CornerRadius = UDim.new(0, 12)
+local ToggleStroke = Instance.new("UIStroke", ToggleBtn); ToggleStroke.Color = Color3.fromRGB(0, 100, 255); ToggleStroke.Thickness = 2
+
+ToggleBtn.MouseButton1Click:Connect(function()
+    MainFrame.Visible = not MainFrame.Visible
+    PlayAudio(SOUND_OPEN_ID)
+end)
+
 
 UserInputService.InputBegan:Connect(function(input, gpe)
     if not gpe and input.KeyCode == TOGGLE_KEY then
