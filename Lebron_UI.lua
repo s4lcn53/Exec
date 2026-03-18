@@ -1,8 +1,3 @@
--- Yokai Style UI (Blue/Black) - V47 SOUND & STABILITY
--- [FIX] Replaced Sound IDs with verified Audio Assets (No more "Asset type" errors)
--- [FIX] Hardened Chams logic to prevent "not a valid member" errors
--- [INCLUDED] All V44 Features (Scroll Fix, Username, Sectioned Hub)
-
 local CoreGui = game:GetService("CoreGui")
 local Players = game:GetService("Players")
 local StarterGui = game:GetService("StarterGui")
